@@ -1,0 +1,16 @@
+version: '2'
+services:
+  dubbo-monitor:
+    restart: always
+    image: mailbyms/dubbo-monitor
+    environment:
+      - "TZ=Asia/Shanghai"
+      - "ZOOKEEPER_ADDRESS=zookeeper:2181"
+    volumes:
+      - ./logs:/usr/local/dubbo-monitor-simple-2.6.0/logs
+    ports:
+      - 8080:8080
+networks:
+    default:
+        external:
+            name: my_network

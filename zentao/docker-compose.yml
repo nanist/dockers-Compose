@@ -1,0 +1,24 @@
+version: '3.0'
+services:
+  # 禅道（你自己的容器名称）
+  behelpful-zentao:
+    image: nanlist/zentao12.3.3:v1.0
+    container_name: zentao
+    privileged: true
+    ports:
+      # 禅道访问页面端口设置，格式，宿主机端头：容器内端口，不建议设置为 80:80  ,这样占用了宿主机服务器的 80 短裤
+      - '8183:80'
+      # 禅道数据库端口设置，端口挂载便于外部管理禅道数据库，不建议设置为 3306:3306 除非你你服务器上不安装 MySQL 提供项目使用
+      - '2906:3306'
+
+    # 数据持久化挂载宿主机：格式： 宿主机路径目录：容器内部目录
+    # 容器内部的不用动，宿主机中的可根据自己需求修改，支持绝对路径和相对路径
+    volumes:
+      - '/home/zentao/data:/www/zentaopms'
+      - '/home/zentao/mysql:/var/lib/mysql'
+
+    # 禅道数据库MySQL root 用户密码设置（这里设置了，感觉无效，启动时依然警告：Access denied for user \'root\'@\'localhost\' (using password: NO)）
+    # 启动引导界面还会让你设置一次 数据库 MySQL 的 用户和密码
+    environment:
+      # 数据库密码
+      - MYSQL_ROOT_PASSWORD=123456

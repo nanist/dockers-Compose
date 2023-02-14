@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  keepalived:
+    build: ./
+    depends_on:
+      - nginx
+    network_mode: "host"
+    cap_drop:
+      - NET_ADMIN
+    privileged: true
+    restart: on-failure:3
+  nginx:
+    image: nanlist/nginx1.23.1:v1.0
+    ports:
+      - "82:80"
+    volumes: 
+      - "/etc/cluster/nginx.conf:/etc/nginx/nginx.conf"
+    restart: on-failure:3
+     
